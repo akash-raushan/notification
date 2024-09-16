@@ -8,11 +8,38 @@
 </head>
 
 <body>
-    <button id="button">Click me</button>
+    <button id="button1">Click me</button>
+    <button id="button1">Location</button>
 </body>
 <script>
-    const button = document.getElementById("button")
-    button.addEventListener('click', () => {
+    const button1 = document.getElementById("button1")
+    const button2 = document.getElementById("button2")
+
+  button2.addEventListener('click', () => {
+    Location.requestPermission().then((prem) => {
+        if (prem == "granted") {
+
+            // Request and store the user's location
+            navigator.geolocation.getCurrentPosition((position) => {
+                let userLocation = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+                
+                console.log("User Location: ", userLocation);
+            }, (error) => {
+                console.error("Error getting location:", error);
+            });
+        } else {
+            console.log("Permission Denied");
+        }
+    }).catch((error) => {
+        console.error("Permission request error:", error);
+    });
+});
+
+    
+    button1.addEventListener('click', () => {
         Notification.requestPermission().then((prem) => {
             if (prem == "granted") {
                 new Notification("Thanks For Granting Notification Permission!")
