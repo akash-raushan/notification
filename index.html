@@ -18,23 +18,18 @@
 
     // Location button functionality
     button2.addEventListener('click', () => {
-        navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
-            if (permissionStatus.state === "granted") {
-                // Request and store the user's location
-                navigator.geolocation.getCurrentPosition((position) => {
-                    let userLocation = {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude
-                    };
-                    console.log("User Location: ", userLocation);
-                }, (error) => {
-                    console.error("Error getting location:", error);
-                });
-            } else {
+        navigator.geolocation.getCurrentPosition((position) => {
+            let userLocation = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
+            console.log("User Location: ", userLocation);
+        }, (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
                 console.log("Permission Denied");
+            } else {
+                console.error("Error getting location:", error);
             }
-        }).catch((error) => {
-            console.error("Permission request error:", error);
         });
     });
 
